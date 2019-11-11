@@ -39,11 +39,9 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onConnect.addListener(port => {
-  console.log(port);
   if (port.name === "__bgimgdwlndr") {
     const run = msg => {
       try {
-        console.log(msg);
         const { backgroundImageSrc } = msg;
         if (backgroundImageSrc) {
           chrome.contextMenus.update(id, {
