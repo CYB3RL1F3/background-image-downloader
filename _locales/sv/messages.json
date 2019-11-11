@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "Ladda ner bakgrundsbild",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Kopiera URL för bakgrundsbild",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Denna tillägg skapades för att möjliggöra nedladdning av bakgrundsbild från snabbmenyn",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Ett fel inträffade: omöjligt att få bakgrundsbild. Försök igen.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Ett fel inträffade: omöjligt att ladda ner bild. Fel URI. Försök igen.",
+    "description": "error get url"
+  }
+}

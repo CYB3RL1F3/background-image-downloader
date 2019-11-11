@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "achtergrondafbeelding downloaden",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "URL van achtergrondafbeelding kopiëren",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Deze extensie is gemaakt om het downloaden van een achtergrondafbeelding uit het contextmenu mogelijk te maken.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Er is een fout opgetreden: onmogelijk om achtergrondafbeelding te krijgen. Probeer het opnieuw.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Er is een fout opgetreden: afbeelding kan niet worden gedownload. Verkeerde URI. Probeer het opnieuw.",
+    "description": "error get url"
+  }
+}

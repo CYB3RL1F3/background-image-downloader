@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "baixar imagem de fundo",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Copiar URL da imagem de fundo",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Esta extensão foi criada para permitir o download da imagem de plano de fundo no menu de contexto.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Ocorreu um erro: impossível obter a imagem de fundo. Tente novamente.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Ocorreu um erro: impossível baixar a imagem. URI errado. Tente novamente.",
+    "description": "error get url"
+  }
+}

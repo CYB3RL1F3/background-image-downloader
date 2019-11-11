@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "Hintergrundbild herunterladen",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Hintergrundbild-URL kopieren",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Diese Erweiterung wurde erstellt, um das Herunterladen von Hintergrundbildern über das Kontextmenü zu ermöglichen.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Es ist ein Fehler aufgetreten: Das Hintergrundbild kann nicht abgerufen werden. Bitte wiederholen.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Es ist ein Fehler aufgetreten: Das Bild konnte nicht heruntergeladen werden. Falscher URI. Bitte wiederholen.",
+    "description": "error get url"
+  }
+}

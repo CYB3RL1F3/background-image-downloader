@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "misintona ny sary background",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Mandika URL sary miafina",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Ity fanitarana ity dia namboarina mba ahafahana misintona ny sary mitsangatsangana avy amin'ny lisitry ny tontolon-kevitra.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Nisy diso nitranga: tsy afaka mahazo sary afovoany. Azafady retry.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Nisy hadisoana nitranga: tsy afaka misintona sary. URI diso. Azafady miverena.",
+    "description": "error get url"
+  }
+}

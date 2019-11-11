@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "скачать фоновое изображение",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Скопировать URL фонового изображения",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Это расширение было создано для включения загрузки фонового изображения из контекстного меню.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Произошла ошибка: невозможно получить фоновое изображение. Пожалуйста, повторите.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Произошла ошибка: невозможно загрузить изображение. Неверный URI. Повторите попытку.",
+    "description": "error get url"
+  }
+}

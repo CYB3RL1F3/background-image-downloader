@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "κατεβάστε την εικόνα φόντου",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Αντιγραφή της εικόνας εικόνας φόντου",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Αυτή η επέκταση δημιουργήθηκε για να καταστεί δυνατή η λήψη εικόνων φόντου από το μενού περιβάλλοντος.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Παρουσιάστηκε σφάλμα: αδύνατη η λήψη εικόνας φόντου.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Παρουσιάστηκε σφάλμα: αδύνατη η λήψη εικόνας. Λάθος URI.",
+    "description": "error get url"
+  }
+}

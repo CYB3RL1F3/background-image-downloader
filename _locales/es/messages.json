@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "Descargar imagen de fondo",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Copiar URL de imagen de fondo",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Esta extensión fue creada para permitir la descarga de imágenes de fondo desde el menú contextual.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Occurió un error: imposible obtener la imagen de fondo. Vuelva a intentarlo.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Ocurrió un error: imposible descargar la imagen. URI incorrecto. Vuelva a intentarlo.",
+    "description": "error get url"
+  }
+}

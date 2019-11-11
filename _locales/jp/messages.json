@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "背景画像をダウンロードする",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "「背景画像のURLをコピー」、",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "この拡張機能は、コンテキストメニューから背景画像をダウンロードできるようにするために作成されました",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "エラーが発生しました：背景画像を取得できません。再試行してください。",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "エラーが発生しました：イメージをダウンロードできません。間違ったURI。再試行してください。",
+    "description": "error get url"
+  }
+}

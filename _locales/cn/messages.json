@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "下载背景图片",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "复制背景图片URL",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "创建此扩展名是为了允许从上下文菜单下载背景图像",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "发生错误：无法获取背景图片。请重试",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "发生错误：无法下载图像。URI错误。请重试",
+    "description": "error get url"
+  }
+}

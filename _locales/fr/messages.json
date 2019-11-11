@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "Télécharger l'image de fond",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Copier l'URL de l'image de fond",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "Cette extension a été créée pour permettre le téléchargement d'images d'arrière-plan à partir du menu contextuel.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "Une erreur est survenue: impossible d'obtenir l'image d'arrière-plan sélectionnée. Veuillez réessayer.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "Une erreur est survenue: impossible de télécharger l'image. Mauvais URI. Veuillez réessayer.",
+    "description": "error get url"
+  }
+}

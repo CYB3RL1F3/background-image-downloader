@@ -1,0 +1,22 @@
+{
+  "download": {
+    "message": "Download background image",
+    "description": "context button"
+  },
+  "copy": {
+    "message": "Copy background image URL",
+    "description": "context copy button"
+  },
+  "description": {
+    "message": "This extension was created to enable background image download from context menu.",
+    "description": "extension description"
+  },
+  "uri_error": {
+    "message": "An error occured: impossible to get background image. Please retry.",
+    "description": "error get url"
+  },
+  "dl_error": {
+    "message": "An error occured: impossible to download image. Wrong URI. Please retry.",
+    "description": "error get url"
+  }
+}
