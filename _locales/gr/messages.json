@@ -7,6 +7,10 @@
     "message": "Αντιγραφή της εικόνας εικόνας φόντου",
     "description": "context copy button"
   },
+  "display": {
+    "message": "εμφάνιση εικόνας φόντου σε μια νέα καρτέλα",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Αυτή η επέκταση δημιουργήθηκε για να καταστεί δυνατή η λήψη εικόνων φόντου από το μενού περιβάλλοντος.",
     "description": "extension description"

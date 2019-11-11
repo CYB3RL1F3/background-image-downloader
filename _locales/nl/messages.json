@@ -7,6 +7,10 @@
     "message": "URL van achtergrondafbeelding kopiëren",
     "description": "context copy button"
   },
+  "display": {
+    "message": "achtergrondafbeelding op een nieuw tabblad weergeven",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Deze extensie is gemaakt om het downloaden van een achtergrondafbeelding uit het contextmenu mogelijk te maken.",
     "description": "extension description"

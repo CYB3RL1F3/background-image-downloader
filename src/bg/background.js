@@ -6,6 +6,7 @@
 
 const id = "___dl:bg:img";
 const idCopy = "__cp:bg:img";
+const idDisplay = "__dpl:bg:img";
 const defaultDownloadMenu = {
   title: chrome.i18n.getMessage("download"),
   contexts: ["page"],
@@ -18,6 +19,12 @@ const defaultCopyMenu = {
   onclick: () => {},
   enabled: false
 };
+const defaultDisplayMenu = {
+  title: chrome.i18n.getMessage("display"),
+  contexts: ["page"],
+  onclick: () => {},
+  enabled: false
+};
 chrome.contextMenus.create({
   id,
   ...defaultDownloadMenu
@@ -26,12 +33,17 @@ chrome.contextMenus.create({
   id: idCopy,
   ...defaultCopyMenu
 });
+chrome.contextMenus.create({
+  id: idDisplay,
+  ...defaultDisplayMenu
+});
 
 chrome.runtime.onConnect.addListener(port => {
   console.log(port);
   if (port.name === "__bgimgdwlndr") {
     const run = msg => {
       try {
+        console.log(msg);
         const { backgroundImageSrc } = msg;
         if (backgroundImageSrc) {
           chrome.contextMenus.update(id, {
@@ -40,8 +52,8 @@ chrome.runtime.onConnect.addListener(port => {
             onclick: () => {
               if (backgroundImageSrc) {
                 port.postMessage({
-                  download: backgroundImageSrc,
-                  open: false
+                  image: backgroundImageSrc,
+                  action: "download"
                 });
               }
             },
@@ -53,8 +65,21 @@ chrome.runtime.onConnect.addListener(port => {
             onclick: () => {
               if (backgroundImageSrc) {
                 port.postMessage({
-                  copy: backgroundImageSrc,
-                  open: false
+                  image: backgroundImageSrc,
+                  action: "copy"
+                });
+              }
+            },
+            enabled: true
+          });
+          chrome.contextMenus.update(idDisplay, {
+            title: chrome.i18n.getMessage("display"),
+            contexts: ["page"],
+            onclick: () => {
+              if (backgroundImageSrc) {
+                port.postMessage({
+                  image: backgroundImageSrc,
+                  action: "display"
                 });
               }
             },
@@ -63,6 +88,7 @@ chrome.runtime.onConnect.addListener(port => {
         } else {
           chrome.contextMenus.update(id, defaultDownloadMenu);
           chrome.contextMenus.update(idCopy, defaultCopyMenu);
+          chrome.contextMenus.update(idDisplay, defaultDisplayMenu);
         }
       } catch (e) {
         console.log(e);

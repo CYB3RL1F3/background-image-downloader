@@ -7,6 +7,10 @@
     "message": "Copia l'URL dell'immagine di sfondo",
     "description": "context copy button"
   },
+  "display": {
+    "message": "Visualizza l'immagine di sfondo in una nuova scheda",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Questa estensione è stata creata per abilitare il download di immagini di sfondo dal menu contestuale.",
     "description": "extension description"

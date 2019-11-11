@@ -1,11 +1,15 @@
 {
   "download": {
-    "message": "misintona ny sary background",
+    "message": "Misintona ny sary background",
     "description": "context button"
   },
   "copy": {
     "message": "Mandika URL sary miafina",
     "description": "context copy button"
+  },
+  "display": {
+    "message": "Asehoy ny sary eo amin'ny tabilao amin'ny tabilao vaovao",
+    "description": "display background image in a new tab"
   },
   "description": {
     "message": "Ity fanitarana ity dia namboarina mba ahafahana misintona ny sary mitsangatsangana avy amin'ny lisitry ny tontolon-kevitra.",

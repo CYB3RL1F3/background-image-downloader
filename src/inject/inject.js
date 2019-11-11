@@ -10,22 +10,39 @@ const debounce = (func, duration) => (...args) => {
   }
 };
 
+const kill = a => {
+  setTimeout(() => {
+    try {
+      document.body.removeChild(a);
+    } catch (e) {
+      console.log(e);
+    }
+  }, 100);
+};
+
+const displayImage = url => {
+  try {
+    const a = document.createElement("a");
+    a.href = url;
+    a.setAttribute("target", "_blank");
+    a.click();
+    kill(a);
+  } catch (e) {
+    console.log(e);
+    alert(chrome.i18n.getMessage("uri_error"));
+  }
+};
+
 const downloadImage = async url => {
   try {
     const filename = url.split("/").pop();
     const content = await fetch(url);
     const blob = await content.blob();
-    var a = document.createElement("a");
+    const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.setAttribute("download", filename);
     a.click();
-    setTimeout(() => {
-      try {
-        document.body.removeChild(a);
-      } catch (e) {
-        console.log(e);
-      }
-    }, 100);
+    kill(a);
   } catch (e) {
     console.log(e);
     alert(chrome.i18n.getMessage("uri_error"));
@@ -62,15 +79,24 @@ let readyStateCheckInterval = setInterval(function() {
   if (document.readyState === "complete") {
     clearInterval(readyStateCheckInterval);
     const port = chrome.runtime.connect({ name: "__bgimgdwlndr" });
-    const run = message => {
-      if (!!message.download) {
-        downloadImage(message.download);
-      }
-      if (!!message.copy) {
-        navigator.clipboard.writeText(message.copy);
+    const onMessage = message => {
+      const { action, image } = message;
+      switch (action) {
+        case "download": {
+          downloadImage(image);
+          break;
+        }
+        case "copy": {
+          navigator.clipboard.writeText(image);
+          break;
+        }
+        case "display": {
+          displayImage(image);
+          break;
+        }
       }
     };
-    port.onMessage.addListener(run);
+    port.onMessage.addListener(onMessage);
     const send = backgroundImageSrc => {
       port.postMessage({
         backgroundImageSrc

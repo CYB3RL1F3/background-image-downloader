@@ -7,6 +7,10 @@
     "message": "Kopiera URL för bakgrundsbild",
     "description": "context copy button"
   },
+  "display": {
+    "message": "Visa bakgrundsbild i en ny flik",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Denna tillägg skapades för att möjliggöra nedladdning av bakgrundsbild från snabbmenyn",
     "description": "extension description"

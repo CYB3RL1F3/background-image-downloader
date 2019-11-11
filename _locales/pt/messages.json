@@ -1,11 +1,15 @@
 {
   "download": {
-    "message": "baixar imagem de fundo",
+    "message": "Baixar imagem de fundo",
     "description": "context button"
   },
   "copy": {
     "message": "Copiar URL da imagem de fundo",
     "description": "context copy button"
+  },
+  "display": {
+    "message": "Exibir imagem de plano de fundo em uma nova guia",
+    "description": "display background image in a new tab"
   },
   "description": {
     "message": "Esta extensão foi criada para permitir o download da imagem de plano de fundo no menu de contexto.",

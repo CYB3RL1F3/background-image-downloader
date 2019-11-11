@@ -7,6 +7,10 @@
     "message": "Hintergrundbild-URL kopieren",
     "description": "context copy button"
   },
+  "display": {
+    "message": "Hintergrundbild in einer neuen Registerkarte anzeigen",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Diese Erweiterung wurde erstellt, um das Herunterladen von Hintergrundbildern über das Kontextmenü zu ermöglichen.",
     "description": "extension description"

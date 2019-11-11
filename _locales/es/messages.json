@@ -7,6 +7,10 @@
     "message": "Copiar URL de imagen de fondo",
     "description": "context copy button"
   },
+  "display": {
+    "message": "Mostrar imagen de fondo en una pestaña nueva",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "Esta extensión fue creada para permitir la descarga de imágenes de fondo desde el menú contextual.",
     "description": "extension description"

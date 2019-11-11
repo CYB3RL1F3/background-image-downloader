@@ -7,6 +7,10 @@
     "message": "复制背景图片URL",
     "description": "context copy button"
   },
+  "display": {
+    "message": "在新标签页中显示背景图片",
+    "description": "display background image in a new tab"
+  },
   "description": {
     "message": "创建此扩展名是为了允许从上下文菜单下载背景图像",
     "description": "extension description"
