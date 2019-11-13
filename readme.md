@@ -4,6 +4,8 @@
 
 Nothing incredible except the code is safe and doesn't contain any data tracking or anything else.
 
+The extension is available on the Chrome Extension store: https://chrome.google.com/webstore/detail/background-image-download/bcgelobgamnjhagojckbmcllaihmpahm?hl=fr&authuser=1
+
 ## Technical Stack
 
 - Javascript ES7
