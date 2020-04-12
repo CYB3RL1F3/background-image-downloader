@@ -33,22 +33,6 @@ const displayImage = url => {
   }
 };
 
-const downloadImage = async url => {
-  try {
-    const filename = url.split("/").pop();
-    const content = await fetch(url);
-    const blob = await content.blob();
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.setAttribute("download", filename);
-    a.click();
-    kill(a);
-  } catch (e) {
-    console.log(e);
-    alert(chrome.i18n.getMessage("uri_error"));
-  }
-};
-
 const getBackgroundImageSrc = url => {
   const snippetUrl = url
     .substring(url.indexOf('url("'), url.indexOf('")'))
@@ -56,18 +40,37 @@ const getBackgroundImageSrc = url => {
   return snippetUrl;
 };
 
+const getImgSrcFromPrevNodes = e => {
+  try {
+    const elements = document.elementsFromPoint(e.clientX, e.clientY);
+    const arr = elements.filter(i => i.tagName === "img" && !!i.src);
+    if (!arr.length) return null;
+    const { src } = arr[0];
+    return src;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
 const getBackgroundSrcFromPrevNodes = e => {
   try {
     const elements = document.elementsFromPoint(e.clientX, e.clientY);
-    const arr = elements.filter(
-      i =>
-        i.style &&
-        (i.style.backgroundImage ||
-          (i.style.background && i.style.background.indexOf("url(" > -1)))
-    );
+    const arr = elements
+      .map(element => getComputedStyle(element))
+      .filter(
+        style =>
+          style &&
+          ((style.backgroundImage && style.backgroundImage !== "none") ||
+            (style.background && style.background.indexOf("url(") > -1))
+      );
     if (!arr.length) return null;
-    const { backgroundImage, background } = arr[0].style;
-    return getBackgroundImageSrc(backgroundImage || background);
+    const { backgroundImage, background } = arr[0];
+    return getBackgroundImageSrc(
+      backgroundImage && backgroundImage !== "none"
+        ? backgroundImage
+        : background
+    );
   } catch (e) {
     console.log(e);
     return null;
@@ -75,17 +78,14 @@ const getBackgroundSrcFromPrevNodes = e => {
 };
 
 let currentElement = null;
-let readyStateCheckInterval = setInterval(function() {
+let currentUrl = null;
+let readyStateCheckInterval = setInterval(function () {
   if (document.readyState === "complete") {
     clearInterval(readyStateCheckInterval);
     const port = chrome.runtime.connect({ name: "__bgimgdwlndr" });
     const onMessage = message => {
       const { action, image } = message;
       switch (action) {
-        case "download": {
-          downloadImage(image);
-          break;
-        }
         case "copy": {
           navigator.clipboard.writeText(image);
           break;
@@ -96,21 +96,28 @@ let readyStateCheckInterval = setInterval(function() {
         }
       }
     };
+
     port.onMessage.addListener(onMessage);
     const send = backgroundImageSrc => {
       port.postMessage({
         backgroundImageSrc
       });
     };
+
     document.addEventListener(
       "mousemove",
       debounce(e => {
         try {
-          if (!!e.srcElement && e.srcElement === currentElement) return; // optim
+          if (!e.srcElement && e.srcElement === currentElement && currentUrl)
+            return;
           currentElement = e.srcElement;
-          const { style } = currentElement;
+          const style = getComputedStyle(currentElement);
           let backgroundImageSrc = null;
-          if (style && style.backgroundImage) {
+          if (
+            style &&
+            style.backgroundImage &&
+            style.backgroundImage !== "none"
+          ) {
             backgroundImageSrc = getBackgroundImageSrc(style.backgroundImage);
           } else if (
             style &&
@@ -120,12 +127,16 @@ let readyStateCheckInterval = setInterval(function() {
             backgroundImageSrc = getBackgroundImageSrc(style.background);
           } else {
             backgroundImageSrc = getBackgroundSrcFromPrevNodes(e);
+            if (!backgroundImageSrc) {
+              backgroundImageSrc = getImgSrcFromPrevNodes(e);
+            }
           }
+          currentUrl = backgroundImageSrc;
           send(backgroundImageSrc);
         } catch (e) {
-          console.log(e);
+          console.log("ERROR: ", e);
         }
-      }, 150)
+      }, 100)
     );
   }
 }, 10);

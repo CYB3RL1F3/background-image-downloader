@@ -7,6 +7,10 @@
 const id = "___dl:bg:img";
 const idCopy = "__cp:bg:img";
 const idDisplay = "__dpl:bg:img";
+
+const isValidPicUrl = url =>
+  /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg|webp)/gim.test(url);
+
 const defaultDownloadMenu = {
   title: chrome.i18n.getMessage("download"),
   contexts: ["page"],
@@ -39,21 +43,18 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onConnect.addListener(port => {
-  console.log(port);
   if (port.name === "__bgimgdwlndr") {
     const run = msg => {
       try {
-        console.log(msg);
         const { backgroundImageSrc } = msg;
-        if (backgroundImageSrc) {
+        if (backgroundImageSrc && isValidPicUrl(backgroundImageSrc)) {
           chrome.contextMenus.update(id, {
             title: chrome.i18n.getMessage("download"),
             contexts: ["page"],
             onclick: () => {
               if (backgroundImageSrc) {
-                port.postMessage({
-                  image: backgroundImageSrc,
-                  action: "download"
+                chrome.downloads.download({
+                  url: backgroundImageSrc
                 });
               }
             },
