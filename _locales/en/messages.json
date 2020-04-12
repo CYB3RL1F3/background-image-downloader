@@ -12,7 +12,7 @@
     "description": "display background image in a new tab"
   },
   "description": {
-    "message": "This extension was created to enable background image download from context menu.",
+    "message": "This extension is created to enable background image download from context menu.",
     "description": "extension description"
   },
   "uri_error": {

@@ -1,6 +1,6 @@
 {
   "name": "Background image downloader",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "manifest_version": 2,
   "description": "__MSG_description__",
   "homepage_url": "http://github.com/CYB3RL1F3",
@@ -14,10 +14,10 @@
     "scripts": ["src/bg/background.js"],
     "persistent": true
   },
-  "permissions": ["downloads", "contextMenus", "idle", "https://*/*"],
+  "permissions": ["downloads", "contextMenus", "idle", "activeTab"],
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["src/inject/inject.js"]
     }
   ]

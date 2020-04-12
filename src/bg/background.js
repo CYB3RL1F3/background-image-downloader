@@ -47,7 +47,6 @@ chrome.runtime.onConnect.addListener(port => {
     const run = msg => {
       try {
         const { backgroundImageSrc } = msg;
-        console.log(backgroundImageSrc);
         if (backgroundImageSrc && isValidPicUrl(backgroundImageSrc)) {
           chrome.contextMenus.update(id, {
             title: chrome.i18n.getMessage("download"),
