@@ -9,29 +9,40 @@ const idCopy = "__cp:bg:img";
 const idDisplay = "__dpl:bg:img";
 const ID = "__bgimgdwlndr";
 
-const isPictureUrl = url =>
-  /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg|webp|gif|svg|bmp)/gim.test(
-    url
-  ) ||
-  /localhost:\d+([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg|webp|gif|svg|bmp)/gim.test(
-    url
+const isPictureUrl = url => {
+  if (!url || typeof url !== "string") return false;
+
+  const imageExtRegex =
+    /\.(jpg|jpeg|png|gif|webp|svg|bmp|heic|avif|ico)(\?|#|$)/i;
+
+  const queryHintRegex =
+    /(dst-jpg|dst-jpeg|dst-png|dst-webp|format=jpe?g|format=png|format=webp)/i;
+
+  const localhostRegex =
+    /^((http|https)?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?\/.*\.(jpg|jpeg|png|gif|webp|svg|bmp|heic|avif|ico)(\?|#|$)/i;
+
+  return (
+    imageExtRegex.test(url) ||
+    queryHintRegex.test(url) ||
+    localhostRegex.test(url)
   );
+};
 
 const defaultDownloadMenu = {
   title: chrome.i18n.getMessage("download"),
-  contexts: ["page", "link", "frame"],
+  contexts: ["all", "page", "link", "frame"],
   enabled: false
 };
 
 const defaultCopyMenu = {
   title: chrome.i18n.getMessage("copy"),
-  contexts: ["page", "link", "frame"],
+  contexts: ["all", "page", "link", "frame"],
   enabled: false
 };
 
 const defaultDisplayMenu = {
   title: chrome.i18n.getMessage("display"),
-  contexts: ["page", "link", "frame"],
+  contexts: ["all", "page", "link", "frame"],
   enabled: false
 };
 
@@ -97,7 +108,7 @@ const handleConnect = port => {
             id,
             {
               title: chrome.i18n.getMessage("download"),
-              contexts: ["page", "link", "frame"],
+              contexts: ["all", "page", "link", "frame"],
               enabled
             },
             () => {
@@ -116,7 +127,7 @@ const handleConnect = port => {
             idCopy,
             {
               title: chrome.i18n.getMessage("copy"),
-              contexts: ["page", "link", "frame"],
+              contexts: ["all", "page", "link", "frame"],
               enabled
             },
             () => {
@@ -133,7 +144,7 @@ const handleConnect = port => {
             idDisplay,
             {
               title: chrome.i18n.getMessage("display"),
-              contexts: ["page", "link", "frame"],
+              contexts: ["all", "page", "link", "frame"],
               enabled
             },
             () => {
