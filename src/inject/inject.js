@@ -1,14 +1,18 @@
 let dbnc = false;
 
-const debounce = (func, duration) => (...args) => {
-  if (dbnc === false) {
-    dbnc = true;
-    func(...args);
-    setTimeout(() => {
-      dbnc = false;
-    }, duration);
-  }
-};
+const ID = "__bgimgdwlndr";
+
+const debounce =
+  (func, duration) =>
+  (...args) => {
+    if (dbnc === false) {
+      dbnc = true;
+      func(...args);
+      setTimeout(() => {
+        dbnc = false;
+      }, duration);
+    }
+  };
 
 const kill = a => {
   setTimeout(() => {
@@ -17,7 +21,7 @@ const kill = a => {
     } catch (e) {
       console.log(e);
     }
-  }, 100);
+  }, 200);
 };
 
 const displayImage = url => {
@@ -34,6 +38,12 @@ const displayImage = url => {
 };
 
 const getBackgroundImageSrc = url => {
+  // Match url() with double quotes, single quotes, or no quotes
+  const match = url.match(/url\(['"]?([^'")\s]+)['"]?\)/);
+  if (match && match[1]) {
+    return match[1];
+  }
+  // Fallback to original logic if regex fails
   const snippetUrl = url
     .substring(url.indexOf('url("'), url.indexOf('")'))
     .replace(/(url\(\"|\"\))/gm, "");
@@ -43,7 +53,9 @@ const getBackgroundImageSrc = url => {
 const getImgSrcFromPrevNodes = e => {
   try {
     const elements = document.elementsFromPoint(e.clientX, e.clientY);
-    const arr = elements.filter(i => i.tagName === "img" && !!i.src);
+    const arr = elements.filter(
+      i => i.tagName.toLocaleLowerCase() === "img" && !!i.src
+    );
     if (!arr.length) return null;
     const { src } = arr[0];
     return src;
@@ -55,7 +67,11 @@ const getImgSrcFromPrevNodes = e => {
 
 const getBackgroundSrcFromPrevNodes = e => {
   try {
-    const elements = document.elementsFromPoint(e.clientX, e.clientY);
+    const elements = [
+      ...document.elementsFromPoint(e.clientX, e.clientY),
+      document.body
+    ];
+
     const arr = elements
       .map(element => getComputedStyle(element))
       .filter(
@@ -64,8 +80,12 @@ const getBackgroundSrcFromPrevNodes = e => {
           ((style.backgroundImage && style.backgroundImage !== "none") ||
             (style.background && style.background.indexOf("url(") > -1))
       );
+
+    console.log("ELEMENTS => ", arr.length, arr);
     if (!arr.length) return null;
+
     const { backgroundImage, background } = arr[0];
+
     return getBackgroundImageSrc(
       backgroundImage && backgroundImage !== "none"
         ? backgroundImage
@@ -78,11 +98,10 @@ const getBackgroundSrcFromPrevNodes = e => {
 };
 
 let currentElement = null;
-let currentUrl = null;
 let readyStateCheckInterval = setInterval(function () {
   if (document.readyState === "complete") {
     clearInterval(readyStateCheckInterval);
-    const port = chrome.runtime.connect({ name: "__bgimgdwlndr" });
+    const port = chrome.runtime.connect({ name: ID });
     const onMessage = message => {
       const { action, image } = message;
       switch (action) {
@@ -99,46 +118,42 @@ let readyStateCheckInterval = setInterval(function () {
 
     port.onMessage.addListener(onMessage);
     chrome.runtime.onMessage.addListener(onMessage);
+
     const send = backgroundImageSrc => {
-      port.postMessage({
-        backgroundImageSrc
-      });
+      const localPort = port || chrome.runtime.connect({ name: ID });
+      console.log("LOCAL PORT => ", localPort);
+      if (localPort) {
+        localPort.postMessage({
+          backgroundImageSrc
+        });
+      }
     };
 
-    document.addEventListener(
-      "mousemove",
-      debounce(e => {
-        try {
-          if (!e.srcElement && e.srcElement === currentElement && currentUrl)
-            return;
-          currentElement = e.srcElement;
-          const style = getComputedStyle(currentElement);
-          let backgroundImageSrc = null;
-          if (
-            style &&
-            style.backgroundImage &&
-            style.backgroundImage !== "none"
-          ) {
-            backgroundImageSrc = getBackgroundImageSrc(style.backgroundImage);
-          } else if (
-            style &&
-            style.background &&
-            style.background.indexOf("url(") > -1
-          ) {
-            backgroundImageSrc = getBackgroundImageSrc(style.background);
-          } else {
-            backgroundImageSrc = getBackgroundSrcFromPrevNodes(e);
-            if (!backgroundImageSrc) {
-              backgroundImageSrc = getImgSrcFromPrevNodes(e);
-            }
+    const handleMove = e => {
+      try {
+        console.log("MOVE event => ", e);
+        console.log("ELEMENT => ", e.srcElement, e.currentTarget);
+        currentElement = e.srcElement || document.body;
+        const style = getComputedStyle(currentElement);
+        let backgroundImageSrc = null;
+        if (style?.backgroundImage && style.backgroundImage !== "none") {
+          backgroundImageSrc = getBackgroundImageSrc(style.backgroundImage);
+        } else if (style?.background?.indexOf("url(") > -1) {
+          backgroundImageSrc = getBackgroundImageSrc(style.background);
+        } else {
+          backgroundImageSrc = getBackgroundSrcFromPrevNodes(e);
+          if (!backgroundImageSrc) {
+            backgroundImageSrc = getImgSrcFromPrevNodes(e);
           }
-          currentUrl = backgroundImageSrc;
-          send(backgroundImageSrc);
-        } catch (e) {
-          console.log("ERROR: ", e);
         }
-      }, 100)
-    );
+        console.log("BACKGROUND IMAGE SRC => ", backgroundImageSrc);
+        send(backgroundImageSrc);
+      } catch (e) {
+        console.log("ERROR: ", e);
+      }
+    };
+
+    document.addEventListener("mousemove", debounce(handleMove, 50));
   }
 }, 10);
 
