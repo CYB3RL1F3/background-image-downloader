@@ -96,10 +96,37 @@ const getBackgroundSrcFromPrevNodes = e => {
 };
 
 let currentElement = null;
+let port = null;
+
+const connectToRuntime = () => {
+  try {
+    if (!chrome.runtime) {
+      console.error("Chrome runtime not available");
+      return null;
+    }
+
+    const newPort = chrome.runtime.connect({ name: ID });
+
+    newPort.onDisconnect.addListener(() => {
+      console.log("Port disconnected, will reconnect on next send");
+      port = null;
+    });
+
+    return newPort;
+  } catch (e) {
+    console.error("Failed to connect:", e);
+    return null;
+  }
+};
+
 let readyStateCheckInterval = setInterval(function () {
   if (document.readyState === "complete") {
     clearInterval(readyStateCheckInterval);
-    const port = chrome.runtime.connect({ name: ID });
+
+    // Initial connection
+    port = connectToRuntime();
+    if (!port) return;
+
     const onMessage = message => {
       if (!message) return;
       const { action, image } = message;
@@ -119,11 +146,20 @@ let readyStateCheckInterval = setInterval(function () {
     chrome.runtime.onMessage.addListener(onMessage);
 
     const send = backgroundImageSrc => {
-      const localPort = port || chrome.runtime.connect({ name: ID });
-      if (localPort) {
-        localPort.postMessage({
-          backgroundImageSrc
-        });
+      try {
+        // Reconnect if port is disconnected
+        if (!port) {
+          port = connectToRuntime();
+        }
+
+        if (port) {
+          port.postMessage({
+            backgroundImageSrc
+          });
+        }
+      } catch (e) {
+        console.error("Failed to send message:", e);
+        port = null;
       }
     };
 
