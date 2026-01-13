@@ -19,7 +19,7 @@ const kill = a => {
     try {
       document.body.removeChild(a);
     } catch (e) {
-      console.error(e);
+      return;
     }
   }, 200);
 };
@@ -32,7 +32,6 @@ const displayImage = url => {
     a.click();
     kill(a);
   } catch (e) {
-    console.error(e);
     alert(chrome.i18n.getMessage("uri_error"));
   }
 };
@@ -60,7 +59,6 @@ const getImgSrcFromPrevNodes = e => {
     const { src } = arr[0];
     return src;
   } catch (e) {
-    console.error(e);
     return null;
   }
 };
@@ -101,26 +99,23 @@ let port = null;
 const connectToRuntime = () => {
   try {
     if (!chrome.runtime) {
-      console.error("Chrome runtime not available");
       return null;
     }
 
     const newPort = chrome.runtime.connect({ name: ID });
 
     newPort.onDisconnect.addListener(() => {
-      console.log("Port disconnected, will reconnect on next send");
       port = null;
     });
 
     return newPort;
   } catch (e) {
-    console.error("Failed to connect:", e);
     return null;
   }
 };
 
 let readyStateCheckInterval = setInterval(function () {
-  if (document.readyState === "complete") {
+  if (document.readyState === "complete" && readyStateCheckInterval) {
     clearInterval(readyStateCheckInterval);
 
     // Initial connection
@@ -132,6 +127,7 @@ let readyStateCheckInterval = setInterval(function () {
       const { action, image } = message;
       switch (action) {
         case "copy": {
+          window.focus();
           navigator.clipboard.writeText(image);
           break;
         }
@@ -158,7 +154,6 @@ let readyStateCheckInterval = setInterval(function () {
           });
         }
       } catch (e) {
-        console.error("Failed to send message:", e);
         port = null;
       }
     };
@@ -180,10 +175,10 @@ let readyStateCheckInterval = setInterval(function () {
         }
         send(backgroundImageSrc);
       } catch (e) {
-        console.error("ERROR: ", e);
+        return;
       }
     };
 
     document.addEventListener("mousemove", debounce(handleMove, 50));
   }
-}, 10);
+}, 20);

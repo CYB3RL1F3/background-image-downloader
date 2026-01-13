@@ -127,7 +127,7 @@ const handleConnect = port => {
           chrome.contextMenus.update(idDisplay, defaultDisplayMenu);
         }
       } catch (e) {
-        console.error("ERROR => ", e);
+        return;
       }
     };
 
