@@ -98,6 +98,7 @@ let readyStateCheckInterval = setInterval(function () {
     };
 
     port.onMessage.addListener(onMessage);
+    chrome.runtime.onMessage.addListener(onMessage);
     const send = backgroundImageSrc => {
       port.postMessage({
         backgroundImageSrc
