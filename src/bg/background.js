@@ -91,71 +91,32 @@ const handleConnect = port => {
   if (port.name === ID) {
     const run = msg => {
       try {
-        console.log("MSG => ", msg);
         const { backgroundImageSrc } = msg;
         const tabId = port.sender?.tab?.id || null;
         const enabled = backgroundImageSrc && isPictureUrl(backgroundImageSrc);
-        console.log("ENABLED => ", enabled, backgroundImageSrc);
 
         if (enabled) {
-          console.log("TABID => ", tabId);
           if (typeof tabId === "number") {
             lastImageByTabId.set(tabId, backgroundImageSrc);
           }
 
-          console.log("Updating context menus to enabled...");
-          chrome.contextMenus.update(
-            id,
-            {
-              title: chrome.i18n.getMessage("download"),
-              contexts: ["all", "page", "link", "frame"],
-              enabled
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                console.log(
-                  "Error updating download menu:",
-                  chrome.runtime.lastError
-                );
-              } else {
-                console.log("Download menu updated successfully");
-              }
-            }
-          );
+          chrome.contextMenus.update(id, {
+            title: chrome.i18n.getMessage("download"),
+            contexts: ["all", "page", "link", "frame"],
+            enabled
+          });
 
-          chrome.contextMenus.update(
-            idCopy,
-            {
-              title: chrome.i18n.getMessage("copy"),
-              contexts: ["all", "page", "link", "frame"],
-              enabled
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                console.log(
-                  "Error updating copy menu:",
-                  chrome.runtime.lastError
-                );
-              }
-            }
-          );
+          chrome.contextMenus.update(idCopy, {
+            title: chrome.i18n.getMessage("copy"),
+            contexts: ["all", "page", "link", "frame"],
+            enabled
+          });
 
-          chrome.contextMenus.update(
-            idDisplay,
-            {
-              title: chrome.i18n.getMessage("display"),
-              contexts: ["all", "page", "link", "frame"],
-              enabled
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                console.log(
-                  "Error updating display menu:",
-                  chrome.runtime.lastError
-                );
-              }
-            }
-          );
+          chrome.contextMenus.update(idDisplay, {
+            title: chrome.i18n.getMessage("display"),
+            contexts: ["all", "page", "link", "frame"],
+            enabled
+          });
         } else {
           if (typeof tabId === "number") {
             lastImageByTabId.delete(tabId);
@@ -166,7 +127,7 @@ const handleConnect = port => {
           chrome.contextMenus.update(idDisplay, defaultDisplayMenu);
         }
       } catch (e) {
-        console.log("ERROR => ", e);
+        console.error("ERROR => ", e);
       }
     };
 

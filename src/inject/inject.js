@@ -19,7 +19,7 @@ const kill = a => {
     try {
       document.body.removeChild(a);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }, 200);
 };
@@ -32,7 +32,7 @@ const displayImage = url => {
     a.click();
     kill(a);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     alert(chrome.i18n.getMessage("uri_error"));
   }
 };
@@ -60,7 +60,7 @@ const getImgSrcFromPrevNodes = e => {
     const { src } = arr[0];
     return src;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return null;
   }
 };
@@ -81,7 +81,6 @@ const getBackgroundSrcFromPrevNodes = e => {
             (style.background && style.background.indexOf("url(") > -1))
       );
 
-    console.log("ELEMENTS => ", arr.length, arr);
     if (!arr.length) return null;
 
     const { backgroundImage, background } = arr[0];
@@ -92,7 +91,6 @@ const getBackgroundSrcFromPrevNodes = e => {
         : background
     );
   } catch (e) {
-    console.log(e);
     return null;
   }
 };
@@ -103,6 +101,7 @@ let readyStateCheckInterval = setInterval(function () {
     clearInterval(readyStateCheckInterval);
     const port = chrome.runtime.connect({ name: ID });
     const onMessage = message => {
+      if (!message) return;
       const { action, image } = message;
       switch (action) {
         case "copy": {
@@ -121,7 +120,6 @@ let readyStateCheckInterval = setInterval(function () {
 
     const send = backgroundImageSrc => {
       const localPort = port || chrome.runtime.connect({ name: ID });
-      console.log("LOCAL PORT => ", localPort);
       if (localPort) {
         localPort.postMessage({
           backgroundImageSrc
@@ -131,8 +129,6 @@ let readyStateCheckInterval = setInterval(function () {
 
     const handleMove = e => {
       try {
-        console.log("MOVE event => ", e);
-        console.log("ELEMENT => ", e.srcElement, e.currentTarget);
         currentElement = e.srcElement || document.body;
         const style = getComputedStyle(currentElement);
         let backgroundImageSrc = null;
@@ -146,15 +142,12 @@ let readyStateCheckInterval = setInterval(function () {
             backgroundImageSrc = getImgSrcFromPrevNodes(e);
           }
         }
-        console.log("BACKGROUND IMAGE SRC => ", backgroundImageSrc);
         send(backgroundImageSrc);
       } catch (e) {
-        console.log("ERROR: ", e);
+        console.error("ERROR: ", e);
       }
     };
 
     document.addEventListener("mousemove", debounce(handleMove, 50));
   }
 }, 10);
-
-console.log("background image extension is up");
